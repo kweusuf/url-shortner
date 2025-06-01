@@ -7,6 +7,6 @@ import (
 )
 
 func main() {
-	fmt.Println("Hello World!")
+	fmt.Println("Hello World! Starting URL Shortner Web Backend...")
 	boot.Init()
 }
