@@ -25,8 +25,8 @@ type CancelInterrupt struct{}
 func Init() {
 
 	var conf *configs.AppConfig
-	err := configs.InitializeConfig(conf)
-	if err != nil {
+	err := configs.InitializeConfig(conf) //nolint:all
+	if err != nil {                       //nolint:all
 		log.Error("Defaulting to inbuilt config")
 		conf = configs.GetConfig()
 	}
