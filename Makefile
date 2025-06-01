@@ -23,7 +23,7 @@ clean: stop ## Clean all binaries
 	@echo
 	rm -rf ${BUILD_DIR}
 
-build: ## Build all binaries
+build: clean ## Build all binaries
 	@echo
 	@echo ">>------------------------------------------------------------------------------------"
 	@echo ">> building..."
@@ -33,7 +33,7 @@ build: ## Build all binaries
 	# -cp -rf configs/config.json ${BUILD_DIR}/
 	$(GO) build -trimpath -ldflags "${LDFLAGS}" -o ${BUILD_DIR}/${BINARY_NAME} ${GO_MAIN_DIR}/*.go
 
-debug-build: ## Build all binaries
+debug-build: clean ## Build all binaries
 	@echo
 	@echo ">>------------------------------------------------------------------------------------"
 	@echo ">> building debug build..."
@@ -41,7 +41,7 @@ debug-build: ## Build all binaries
 	@echo
 	@mkdir -p ${BUILD_DIR}
 	# -cp -rf configs/config.json ${BUILD_DIR}/
-	CGO_ENABLED=0 $(GO) build -trimpath -gcflags "all=-N -l" -o ${BUILD_DIR}/${BINARY_NAME} ${GO_MAIN_DIR}/*.go
+	CGO_ENABLED=0 $(GO) build -trimpath -gcflags "all=-N -l" -o ${BUILD_DIR}/${BINARY_NAME}-debug ${GO_MAIN_DIR}/*.go
 
 run: stop clean tidy lint build ## Build and run the application
 	@echo
