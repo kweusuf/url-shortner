@@ -19,15 +19,15 @@ func decodeGetRequest(ctx context.Context, req *http.Request) (interface{}, erro
 	return request, nil
 }
 
-// func decodePostRequest(ctx context.Context, req *http.Request) (interface{}, error) {
-// 	var request model.PostRequest
-// 	err := json.NewDecoder(req.Body).Decode(&request)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	request.Context = ctx
-// 	return request, nil
-// }
+func decodePostRequest(ctx context.Context, req *http.Request) (interface{}, error) {
+	var request model.URLRequest
+	err := json.NewDecoder(req.Body).Decode(&request)
+	if err != nil {
+		return nil, err
+	}
+	request.Context = ctx
+	return request, nil
+}
 
 // func decodePutRequest(ctx context.Context, req *http.Request) (interface{}, error) {
 // 	var request model.PutRequest

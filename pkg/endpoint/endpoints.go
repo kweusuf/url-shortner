@@ -7,7 +7,8 @@ import (
 )
 
 type AppEndpoints struct {
-	HelloEndpoint endpoint.Endpoint
+	HelloEndpoint      endpoint.Endpoint
+	URLShortenEndpoint endpoint.Endpoint
 
 	// GetAllJobsEndpoint       endpoint.Endpoint
 	// GetAllActiveJobsEndpoint endpoint.Endpoint
@@ -20,6 +21,8 @@ type AppEndpoints struct {
 func MakeEndpoints(services service.Services) AppEndpoints {
 	return AppEndpoints{
 		HelloEndpoint: makeHelloEndpoint(services.HelloService),
+
+		URLShortenEndpoint: makeURLShortenEndpoint(services.URLService),
 
 		// GetAllJobsEndpoint:       makeGetAllJobsEndpoint(services.JobManagerService),
 		// GetAllActiveJobsEndpoint: makeGetAllActiveJobsEndpoint(services.JobManagerService),

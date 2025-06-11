@@ -16,25 +16,28 @@ func Debug(data string) {
 	logger(zerolog.DebugLevel, data)
 }
 
-func Error(data string) {
-	logger(zerolog.ErrorLevel, data)
+func Error(data string, error ...error) {
+	logger(zerolog.ErrorLevel, data, error...)
 }
 
-func Fatal(data string) {
-	logger(zerolog.FatalLevel, data)
+func Fatal(data string, error ...error) {
+	logger(zerolog.FatalLevel, data, error...)
 }
 
-func Panic(data string) {
-	logger(zerolog.PanicLevel, data)
+func Panic(data string, error ...error) {
+	logger(zerolog.PanicLevel, data, error...)
 }
 
 func Warn(data string) {
 	logger(zerolog.WarnLevel, data)
 }
 
-func logger(level zerolog.Level, data string) {
+func logger(level zerolog.Level, data string, error ...error) {
 	// zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 	log.WithLevel(level).Msg(data)
+	if len(error) > 0 {
+		log.WithLevel(level).Err(error[0]).Msg("An error occurred")
+	}
 }
 
 func InitializeLogging() {

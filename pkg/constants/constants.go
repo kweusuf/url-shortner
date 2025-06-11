@@ -1,9 +1,12 @@
 package constants
 
-import "os"
+import (
+	"os"
+	"time"
+)
 
 const (
-	API = "/api/v1"
+	API_V1 = "/api/v1"
 
 	SEPARATOR = "/"
 
@@ -23,6 +26,9 @@ const (
 	Authorization                         = "Authorization"
 
 	PathSeparator = string(os.PathSeparator)
+
+	ExpirationInterval = 24 * time.Hour
+	CleanupInterval    = 15 * time.Minute
 )
 
 type CtxKeyAppConfig struct{}

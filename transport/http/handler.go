@@ -30,9 +30,17 @@ func makeHandler(router *mux.Router, endpoints endpoint.AppEndpoints /* , option
 
 	// Hello Endpoint
 	// /api/v1/hello
-	router.Methods(http.MethodGet).Path(constants.API + "/hello").Handler(
+	router.Methods(http.MethodGet).Path(constants.API_V1 + "/hello").Handler(
 		kithttp.NewServer(endpoints.HelloEndpoint,
 			decodeGetRequest,
+			encodeResponse,
+			kithttp.ServerErrorEncoder(httpErrorEncoder)))
+
+	// URL Shorten Endpoint
+	// /api/v1/shorten
+	router.Methods(http.MethodPost).Path(constants.API_V1 + "/shorten").Handler(
+		kithttp.NewServer(endpoints.URLShortenEndpoint,
+			decodePostRequest,
 			encodeResponse,
 			kithttp.ServerErrorEncoder(httpErrorEncoder)))
 

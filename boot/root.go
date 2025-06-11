@@ -11,11 +11,14 @@ import (
 
 	"github.com/kweusuf/url-shortner/configs"
 	helloclient "github.com/kweusuf/url-shortner/pkg/client/hello"
+	urlclient "github.com/kweusuf/url-shortner/pkg/client/url"
 	"github.com/kweusuf/url-shortner/pkg/constants"
 	"github.com/kweusuf/url-shortner/pkg/endpoint"
 	"github.com/kweusuf/url-shortner/pkg/service"
 	helloservice "github.com/kweusuf/url-shortner/pkg/service/hello"
+	urlservice "github.com/kweusuf/url-shortner/pkg/service/url"
 	"github.com/kweusuf/url-shortner/pkg/utils/log"
+	"github.com/kweusuf/url-shortner/pkg/utils/url"
 	httppkg "github.com/kweusuf/url-shortner/transport/http"
 	"github.com/oklog/run"
 )
@@ -43,6 +46,8 @@ func Init() {
 
 	initializeHttpServer(endpoints, *conf, ctx, g)
 
+	go url.ExecuteCleanUp()
+
 	InitCancelInterrupt(g, make(chan CancelInterrupt))
 	if err := g.Run(); err != nil {
 		log.Error("Error in running go routines")
@@ -53,14 +58,17 @@ func Init() {
 
 func generateEndpoints(ctx context.Context) endpoint.AppEndpoints {
 	helloClient := helloclient.MakeHelloClient()
+	urlClient := urlclient.MakeURLClient() // Assuming MakeURLClient is defined in service package
 	// mongoUtil := db.NewMongoUtil(ctx)
 	// jobClient := jobclient.MakeJobManagerClient(*mongoUtil)
 
 	helloService := helloservice.MakeHelloService(helloClient)
+	urlService := urlservice.MakeURLService(urlClient) // Assuming MakeURLService is defined in service package
 	// jobManagerService := jobservice.MakeJobManagerService(jobClient)
 
 	endpoints := endpoint.MakeEndpoints(service.Services{
 		HelloService: helloService,
+		URLService:   urlService,
 		// JobManagerService: jobManagerService,
 	})
 	return endpoints
@@ -86,7 +94,7 @@ func initializeHttpServer(endpoints endpoint.AppEndpoints, config configs.AppCon
 		return srv.ListenAndServe()
 	}, func(error) {
 		log.Error(fmt.Sprintf("%s server exited", config.URI.HttpScheme))
-		srv.Close()
+		_ = srv.Close()
 	})
 }
 
