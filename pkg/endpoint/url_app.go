@@ -18,3 +18,12 @@ func makeURLShortenEndpoint(svc service.URLService) endpoint.Endpoint {
 		return utils.ConstructResponse(result, err)
 	}
 }
+
+func makeURLExpandEndpoint(svc service.URLService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		log.Debug("In makeURLExpandEndpoint method")
+		url := request.(model.URLRequest).URL
+		result, err := svc.ExpandURLService(ctx, url)
+		return utils.ConstructResponse(result, err)
+	}
+}

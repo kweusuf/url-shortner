@@ -44,46 +44,11 @@ func makeHandler(router *mux.Router, endpoints endpoint.AppEndpoints /* , option
 			encodeResponse,
 			kithttp.ServerErrorEncoder(httpErrorEncoder)))
 
-	// // /api/v1/getJobs
-	// router.Methods(http.MethodGet).Path(constants.API + "/getJobs").Handler(
-	// 	kithttp.NewServer(endpoints.GetAllJobsEndpoint,
-	// 		decodeGetRequest,
-	// 		encodeResponse,
-	// 		kithttp.ServerErrorEncoder(httpErrorEncoder)))
-
-	// // /api/v1/getActiveJobs
-	// router.Methods(http.MethodGet).Path(constants.API + "/getActiveJobs").Handler(
-	// 	kithttp.NewServer(endpoints.GetAllActiveJobsEndpoint,
-	// 		decodeGetRequest,
-	// 		encodeResponse,
-	// 		kithttp.ServerErrorEncoder(httpErrorEncoder)))
-
-	// // /api/v1/getJob
-	// router.Methods(http.MethodGet).Path(constants.API + "/getJob").Handler(
-	// 	kithttp.NewServer(endpoints.GetJobEndpoint,
-	// 		decodeGetRequest,
-	// 		encodeResponse,
-	// 		kithttp.ServerErrorEncoder(httpErrorEncoder)))
-
-	// // /api/v1/createJob
-	// router.Methods(http.MethodPost).Path(constants.API + "/createJob").Handler(
-	// 	kithttp.NewServer(endpoints.CreateJobEndpoint,
-	// 		decodePostRequest,
-	// 		encodeResponse,
-	// 		kithttp.ServerErrorEncoder(httpErrorEncoder)))
-
-	// // /api/v1/updateJob
-	// router.Methods(http.MethodPut).Path(constants.API + "/updateJob").Handler(
-	// 	kithttp.NewServer(endpoints.UpdateJobEndpoint,
-	// 		decodePutRequest,
-	// 		encodeResponse,
-	// 		kithttp.ServerErrorEncoder(httpErrorEncoder)))
-
-	// // /api/v1/deleteJob
-	// router.Methods(http.MethodDelete).Path(constants.API + "/deleteJob").Handler(
-	// 	kithttp.NewServer(endpoints.DeleteJobEndpoint,
-	// 		decodeDeleteRequest,
-	// 		encodeResponse,
-	// 		kithttp.ServerErrorEncoder(httpErrorEncoder)))
+	// URL Expand Endpoint
+	router.Methods(http.MethodGet).Path(constants.API_V1 + "/s/{shortCode}").Handler(
+		kithttp.NewServer(endpoints.URLExpandEndpoint,
+			decodeGetRequest,
+			encodeResponse,
+			kithttp.ServerErrorEncoder(httpErrorEncoder)))
 
 }

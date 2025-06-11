@@ -8,5 +8,4 @@ import (
 type Services struct {
 	HelloService helloservice.HelloService
 	URLService   urlservice.URLService
-	// JobManagerService jobservice.JobManagerService
 }

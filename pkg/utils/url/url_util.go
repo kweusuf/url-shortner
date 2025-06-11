@@ -6,6 +6,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/google/uuid"
+
 	"github.com/kweusuf/url-shortner/pkg/constants"
 	"github.com/kweusuf/url-shortner/pkg/model"
 	"github.com/kweusuf/url-shortner/pkg/utils/log"
@@ -14,7 +16,7 @@ import (
 var (
 	urlStore = make(map[string]model.URLStoreEntry) // Store for original URLs and their shortened versions
 	mu       sync.Mutex
-	counter  int
+	// counter  int
 )
 
 func ShortenURL(ctx context.Context, url string) (interface{}, error) {
@@ -30,17 +32,19 @@ func ShortenURL(ctx context.Context, url string) (interface{}, error) {
 		return val.ShortenedURL, nil
 	}
 	// Generate a simple short code
-	counter++
-	shortCode := fmt.Sprintf("short%d", counter)
+	// counter++
+	// shortCode := fmt.Sprintf("short%d", counter)
+	shortCode := uuid.New()
+	shortenedURL := fmt.Sprintf(constants.BaseShortenedUrl, shortCode.String())
 	urlStore[url] = model.URLStoreEntry{
 		CreatedTimestamp: time.Now(),
 		OriginalURL:      url,
-		ShortenedURL:     shortCode,
-		ShortCode:        shortCode,
+		ShortenedURL:     shortenedURL,
+		ShortCode:        shortCode.String(),
 		ExpirationDate:   time.Now().Add(constants.ExpirationInterval),
 	}
 
-	return shortCode, nil
+	return shortenedURL, nil
 }
 
 func ExpandURL(ctx context.Context, url string) (interface{}, error) {

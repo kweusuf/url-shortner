@@ -27,8 +27,10 @@ const (
 
 	PathSeparator = string(os.PathSeparator)
 
-	ExpirationInterval = 24 * time.Hour
-	CleanupInterval    = 15 * time.Minute
+	BaseShortenedUrl = "https://my-domain.com/s/%s" //TODO: check if this can be moved to config
+
+	ExpirationInterval = 24 * time.Hour   //TODO: make this configurable
+	CleanupInterval    = 15 * time.Minute //TODO: make this configurable
 )
 
 type CtxKeyAppConfig struct{}

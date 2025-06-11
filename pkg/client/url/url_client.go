@@ -17,6 +17,7 @@ var (
 
 type URLClient interface {
 	ShortenURL(ctx context.Context, url string) (interface{}, error)
+	ExpandURL(ctx context.Context, url string) (interface{}, error)
 }
 
 type urlClient struct {
@@ -30,11 +31,26 @@ func MakeURLClient() URLClient {
 func (client *urlClient) ShortenURL(ctx context.Context, url string) (interface{}, error) {
 	log.Debug(fmt.Sprintf("In ShortenURL method with URL: %s", url))
 
-	shortCode, err := urlUtil.ShortenURL(ctx, url)
+	shortenedURL, err := urlUtil.ShortenURL(ctx, url)
 	if err != nil {
 		return nil, err
 	}
 
-	shortenedURL := fmt.Sprintf("https://my-domain.com/%s", shortCode)
 	return shortenedURL, nil
+}
+
+// ExpandURL implements URLClient.
+func (client *urlClient) ExpandURL(ctx context.Context, url string) (interface{}, error) {
+	log.Debug(fmt.Sprintf("In ExpandURL method with URL: %s", url))
+
+	originalURL, err := urlUtil.ExpandURL(ctx, url)
+	if err != nil {
+		return nil, err
+	}
+
+	if originalURL == nil {
+		return nil, fmt.Errorf("URL not found: %s", url)
+	}
+
+	return originalURL, nil
 }
